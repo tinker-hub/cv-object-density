@@ -1,0 +1,26 @@
+{
+  "name": "cv-object-density",
+  "version": "1.0.0",
+  "description": "Getting the density of object base on certain base image",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "opencv4nodejs": "^4.6.1",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinker-hub/cv-object-density.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tinker-hub/cv-object-density/issues"
+  },
+  "homepage": "https://github.com/tinker-hub/cv-object-density#readme"
+}
