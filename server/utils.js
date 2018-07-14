@@ -21,6 +21,12 @@ exports.grabFrames = (cap, delay, onFrame) => {
   }, 0);
 };
 
+exports.preprocessedFrame = (frame) => {
+  const bilateralFrame = frame.bilateralFilter(7, 150, 150)
+  const grayFrame = bilateralFrame.cvtColor(cv.COLOR_BGR2GRAY);
+  return grayFrame;
+};
+
 exports.drawRectAroundBlobs = (binaryImg, dstImg, minPxSize, fixedRectWidth) => {
   const {
     centroids,

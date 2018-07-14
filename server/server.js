@@ -20,23 +20,16 @@ server.listen(8080, function () {
 const bgSubtractor = new cv.BackgroundSubtractorMOG2();
 const capture = new cv.VideoCapture(0);
 
-
 const io = require('socket.io')(server);
 io.on('connection', (socket) => {
+	let baseFrame;
 	utils.grabFrames(capture, 1, (frame) => {
-		const foreGroundMask = bgSubtractor.apply(frame);
-		const dilated = foreGroundMask.dilate(cv.getStructuringElement(cv.MORPH_ELLIPSE, new cv.Size(4, 4)), new cv.Point(-1, -1), 2);
-		const blurred = dilated.blur(new cv.Size(10, 10));
-		const thresholded = blurred.threshold(200, 255, cv.THRESH_BINARY);
-
-		const minPxSize = 4000;
-	  utils.drawRectAroundBlobs(thresholded, frame, minPxSize);
-
+		if(!baseFrame) baseFrame = utils.preprocessedFrame(frame)
+		const subtractedFrame = baseFrame.absdiff(utils.preprocessedFrame(frame));
+		const blurred = subtractedFrame.blur(new cv.Size(12, 12));
+		const thresholded = blurred.threshold(15, 255, 0);
 		const density = (thresholded.countNonZero() / (480 * 640) ) * 100;
 		socket.emit('density', density);
-
-		cv.imshow('foreGroundMask', foreGroundMask);
 		cv.imshow('thresholded', thresholded);
-		cv.imshow('frame', frame);
 	});
 });
